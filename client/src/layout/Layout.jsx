@@ -5,11 +5,13 @@ import RegisterModal from '../components/modals/RegisterModal'
 import { Toaster } from 'react-hot-toast'
 import LoginModal from '../components/modals/LoginModal'
 import RentModal from '../components/modals/RentModal'
+import SearchModal from '../components/modals/SearchModal'
 // import ToasterProvider from '../providers/ToasterProvider'
 
 const Layout = () => {
     return <>
         <Toaster />
+        <SearchModal/>
         <RentModal />
         <RegisterModal />
         <LoginModal />

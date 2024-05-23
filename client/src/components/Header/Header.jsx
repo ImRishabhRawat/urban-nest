@@ -1,5 +1,5 @@
 
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import Container from "../Container";
 import Logo from "./Logo";
 import Search from "./Search";
@@ -7,6 +7,8 @@ import UserMenu from "./UserMenu";
 import Categories from "./Categories";
 
 const Header = () => {
+  const location = useLocation();
+  const isHomePage = location.pathname === '/';
   return (
     <div className="fixed w-full bg-white z-10 shadow-sm">
       <div className="py-4 border-b-[1px] ">
@@ -20,7 +22,7 @@ const Header = () => {
           </div>
         </Container>
       </div>
-      <Categories />
+       {isHomePage && <Categories />}
     </div>
   )
 }

@@ -8,11 +8,10 @@ import useRegisterModal from '../../hooks/useRegisterModal';
 import Modals from './Modals';
 import Heading from '../Heading';
 import Input from '../input/Input';
-import {toast} from 'react-hot-toast'
+import { toast } from 'react-hot-toast';
 import Button from '../Button';
 import { BASE_URL } from '../../config';
 import useLoginModal from '../../hooks/useLoginModal';
-
 
 const RegisterModal = () => {
     const registerModal = useRegisterModal();
@@ -31,39 +30,43 @@ const RegisterModal = () => {
             name: '',
             email: '',
             password: '',
-            role:'',
+            role: '',
         }
     });
 
     const googleAuth = () => {
-		window.open(
-			`${BASE_URL}/Oauth/google/callback`,
-			"_self"
-		);
-	};
-    // const navigate = useNavigate();
-    
+        window.open(
+            `${BASE_URL}/Oauth/google`,
+            "_self"
+        );
+    };
+
+    const githubAuth = () => {
+        window.open(
+            `${BASE_URL}/github`,
+            "_self"
+        );
+    };
+
     const onSubmit = async (data) => {
         setIsLoading(true);
         try {
-           const res = await axios.post(`${BASE_URL}/auth/register`, data);
-           const {message} = res.data;
+            const res = await axios.post(`${BASE_URL}/auth/register`, data);
+            const { message } = res.data;
 
-           if (res.status !== 200) { 
-            throw new Error(message)
-          }
-          
+            if (res.status !== 200) {
+                throw new Error(message);
+            }
             toast.success(message);
             registerModal.onClose();
             loginModal.onOpen();
         } catch (error) {
             console.log(error);
             toast.error("Something went wrong ");
-            
         } finally {
             setIsLoading(false);
         }
-    }
+    };
 
     const bodyContent = (
         <div className="flex flex-col gap-4">
@@ -97,7 +100,7 @@ const RegisterModal = () => {
             />
             <Input
                 id="password"
-                label="password"
+                label="Password"
                 type='password'
                 disabled={isLoading}
                 register={register}
@@ -105,52 +108,50 @@ const RegisterModal = () => {
                 required
             />
             <Input
-            id="role"
-            label="Role"
-            type='select'
-            disabled={isLoading}
-            register={register}
-            errors={errors}
-            required
-            options={['student', 'owner']}
+                id="role"
+                label="Role"
+                type='select'
+                disabled={isLoading}
+                register={register}
+                errors={errors}
+                required
+                options={['student', 'owner']}
             />
-
         </div>
-    )
+    );
 
     const footerContent = (
         <div className="flex flex-col gap-4 mt-3">
             <hr />
             <Button
-            outline
-            label="Continue with Google"
-            icon={<FcGoogle />}
-            onClick={googleAuth}
+                outline
+                label="Continue with Google"
+                icon={<FcGoogle />}
+                onClick={googleAuth}
             />
             <Button
-            outline
-            label="Continue with GitHub"
-            icon={<AiFillGithub />}
-            onClick={()=>{window.location.href = "http://localhost:8000/api/v1/auth/github"}}
+                outline
+                label="Continue with GitHub"
+                icon={<AiFillGithub />}
+                onClick={githubAuth}
             />
             <div className="text-neutral-500 text-center mt-4 font-light">
                 <div className='justify-center flex flex-row items-center gap-2'>
                     <div>
-                    Already have an account?
-                </div>
+                        Already have an account?
+                    </div>
                     <div
-                    onClick={() => {
-                        registerModal.onClose();
+                        onClick={() => {
+                            registerModal.onClose();
                             loginModal.onOpen();
-                    }}
+                        }}
                         className='text-neutral-800 cursor-pointer hover:underline'>
-                    Log in
-                </div>
+                        Log in
+                    </div>
                 </div>
             </div>
-       </div>
-    )
-    
+        </div>
+    );
 
     return (
         <Modals
@@ -163,7 +164,7 @@ const RegisterModal = () => {
             body={bodyContent}
             footer={footerContent}
         />
-    )
-}
+    );
+};
 
 export default RegisterModal;

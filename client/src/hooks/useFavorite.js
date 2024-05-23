@@ -1,56 +1,63 @@
-// useFavorite.js
-
-import { useCallback, useContext, useMemo } from "react";
 import axios from "axios";
+import { useCallback, useMemo, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
-import { BASE_URL, token } from "../config";
+import useLoginModal from "./useLoginModal";
+import { BASE_URL } from "../config";
 import { authContext } from "../context/AuthContext";
+import { useContext } from "react";
 
-const useFavorite = ({ listingId, currentUser }) => {
+
+const useFavorite = ({ listingId }) => {
 	const { user } = useContext(authContext);
+	const navigate = useNavigate();
+	const loginModal = useLoginModal();
 
-	const hasFavorited = useMemo(() => {
-		const list = user?.favoriteIds || [];
-		return list.includes(listingId);
-	}, [user, listingId]);
+	// State to manage favorite status optimistically
+	const [isFavorited, setIsFavorited] = useState(() =>
+		user?.favoriteIds?.includes(listingId)
+	);
 
 	const toggleFavorite = useCallback(
 		async (e) => {
 			e.stopPropagation();
-
 			if (!user) {
-				return toast.error("Please log in to add to favorites");
+				return loginModal.onOpen();
 			}
 
 			try {
-				const url = hasFavorited
-					? `${BASE_URL}/user/${currentUser._id}/favorites/${listingId}`
-					: `${BASE_URL}/user/${currentUser._id}/favorites/${listingId}`;
-				const method = hasFavorited ? "delete" : "post";
+				let response;
 
-				await axios[method](
-					url,
-					{},
-					{
-						headers: {
-							Authorization: `Bearer ${token}`,
-						},
+				if (isFavorited) {
+					response = await axios.delete(
+						`${BASE_URL}/user/removeFavorite/${user._id}/${listingId}`
+					);
+					if (response.status === 200) {
+						setIsFavorited(false); // Update state to not favorited
+						toast.success("Successfully removed from favorites");
 					}
-				);
-
-				toast.success(
-					hasFavorited ? "Removed from favorites" : "Added to favorites"
-				);
+				} else {
+					response = await axios.post(
+						`${BASE_URL}/user/addFavorite/${user._id}/${listingId}`
+					);
+					if (response.status === 200) {
+						setIsFavorited(true); // Update state to favorited
+						toast.success("Successfully added to favorites");
+					}
+				}
 			} catch (error) {
+				console.error(error);
 				toast.error("Something went wrong");
+				// Revert optimistic update if there was an error
+				setIsFavorited(isFavorited);
 			}
 		},
-		[user, hasFavorited, listingId]
+		[user, isFavorited, listingId, loginModal]
 	);
 
 	return {
-		hasFavorited,
 		toggleFavorite,
+		isFavorited,
 	};
 };
 

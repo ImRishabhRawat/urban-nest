@@ -29,7 +29,7 @@ const STEPS = {
 
 const RentModal = () => {
     const rentModal = useRentModal();
-    const [step, setStep] = useState(STEPS.CATEGORY)
+    const [step, setStep] = useState(STEPS.CATEGORY);
     const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate();
 
@@ -167,7 +167,7 @@ const RentModal = () => {
                 /> */}
                  <StateSelect
           value={location.state}
-          onChange={(value)=> setCustomValue('location. state', value)}
+          onChange={(value)=> setCustomValue('location.state', value)}
         />
         <CitySelect
           stateValue={state}

@@ -5,7 +5,6 @@ import User from "../models/UserSchema.js";
 export const authenticate = async (req, res, next) => {
 	//get token from headers
 	const authToken = req.headers.authorization;
-	console.log(authToken);
 
 	if (!authToken || !authToken.startsWith("Bearer ")) {
 		return res
@@ -14,14 +13,25 @@ export const authenticate = async (req, res, next) => {
 	}
 	try {
 		const token = authToken.split(" ")[1];
-		console.log(token);
 
 		//verify token
 		const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
-		console.log(decoded);
 		req.userId = decoded.id;
 		req.role = decoded.role;
 
+		// Fetch user data and attach to request
+		let user = await User.findById(req.userId);
+		if (!user) {
+			user = await Owner.findById(req.userId);
+		}
+
+		if (!user) {
+			return res
+				.status(404)
+				.json({ success: false, message: "User not found" });
+		}
+
+		req.user = user;
 		next();
 	} catch (error) {
 		console.log(error);
@@ -35,7 +45,6 @@ export const authenticate = async (req, res, next) => {
 
 export const restrict = (roles) => async (req, res, next) => {
 	const userId = req.userId;
-	// console.log(userId);
 	let user;
 
 	try {

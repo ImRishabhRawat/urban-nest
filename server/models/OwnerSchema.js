@@ -12,6 +12,7 @@ const OwnerSchema = new mongoose.Schema(
 		},
 		gender: { type: String, enum: ["male", "female"] },
 		properties: [{ type: mongoose.Schema.Types.ObjectId, ref: "Room" }],
+		bookings: [{ type: mongoose.Schema.Types.ObjectId, ref: "Booking" }],
 		isApproved: {
 			type: String,
 			enum: ["pending", "approved", "cancelled"],

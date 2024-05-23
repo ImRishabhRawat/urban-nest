@@ -2,10 +2,8 @@ import { Country, State, City } from "country-state-city";
 
 // Get the ISO code for India
 let indiaISOCode = "IN";
-console.log(indiaISOCode);
 // Get all states of India
 let statesOfIndia = State.getStatesOfCountry(indiaISOCode);
-console.log(statesOfIndia);
 const formattedStates = statesOfIndia.map((state) => ({
 	value: state.isoCode,
 	label: state.name,

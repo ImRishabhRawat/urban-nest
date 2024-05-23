@@ -1,31 +1,41 @@
 // githubAuth.js
 import express from "express";
 import passport from "passport";
-import GitHubStrategy from "passport-github";
+import jwt from "jsonwebtoken";
 
 const router = express.Router();
 
-passport.use(
-	new GitHubStrategy(
+const generateToken = (user) => {
+	return jwt.sign(
+		{ id: user._id, role: user.role },
+		process.env.JWT_SECRET_KEY,
 		{
-			client_id: process.env.CLIENT_ID,
-			clientSecret: process.env.CLIENT_SECRET,
-			callbackURL: "http://localhost:8000/auth/github/callback",
-		},
-		function (accessToken, refreshToken, profile, cb) {
-			// Find or create a user in your database and call `cb` with the user
+			expiresIn: "15d",
 		}
-	)
-);
-
-router.get("/auth/github", passport.authenticate("github"));
+	);
+};
 
 router.get(
-	"/auth/github/callback",
-	passport.authenticate("github", { failureRedirect: "/login" }),
-	function (req, res) {
-		// Successful authentication, redirect home.
-		res.redirect("/");
+	"/",
+	passport.authenticate("github", { scope: ["user:email"] })
+);
+
+router.get(
+	"/callback",
+	passport.authenticate("github", { failureRedirect: "/login/failed" }),
+	(req, res) => {
+		if (!req.user) {
+			return res.redirect("/login/failed");
+		}
+		const token = generateToken(req.user);
+		const user = req.user;
+		res.redirect(
+			`${
+				process.env.CLIENT_SITE_URL
+			}/oauth-success?token=${token}&user=${encodeURIComponent(
+				JSON.stringify(user)
+			)}`
+		);
 	}
 );
 

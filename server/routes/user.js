@@ -1,27 +1,41 @@
 import express from "express";
 import {
-	updateUser,
 	deleteUser,
 	getSingleUser,
 	getAllUsers,
 	getUserProfile,
 	addFavorite,
 	removeFavorite,
+	getFavorites,
+	updateUserProfile,
 } from "../Controllers/userController.js";
 import { authenticate, restrict } from "../auth/verifyToken.js";
 const router = express.Router();
 
-router.get("/:id", authenticate, restrict(["student"]), getSingleUser);
+router.get("/:id", authenticate, restrict(["student", "owner"]), getSingleUser);
 router.delete("/:id", authenticate, restrict(["student"]), deleteUser);
-router.put("/:id", authenticate, restrict(["student"]), updateUser);
+router.put("/:id", authenticate, restrict(["student"]), updateUserProfile);
+
 router.get("/", authenticate, restrict(["admin"]), getAllUsers);
-router.get("/profile/me", authenticate, restrict(["student"]), getUserProfile);
+router.get("/profile/me", authenticate, getUserProfile);
 
-// Add a listing to favorites
-router.post("/:id/favorites/:listingId", authenticate, addFavorite);
-
-// Remove a listing from favorites
-router.delete("/:id/favorites/:listingId", authenticate, removeFavorite);
-
+router.post(
+	"/addFavorite/:userId/:listingId",
+	authenticate,
+	restrict(["student"]),
+	addFavorite
+);
+router.delete(
+	"/removeFavorite/:userId/:listingId",
+	authenticate,
+	restrict(["student"]),
+	removeFavorite
+);
+router.get(
+	"/getFavorites/:userId",
+	authenticate,
+	restrict(["student"]),
+	getFavorites
+);
 
 export default router;

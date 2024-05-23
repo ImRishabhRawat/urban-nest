@@ -1,7 +1,11 @@
 import {BiSearch} from 'react-icons/bi';
+import useSearchModal from '../../hooks/useSearchModal';
 const Search = () => {
+    const searchModal = useSearchModal();
   return (
-    <div className="border-[1px] w-auto md:w-auto py-2 rounded-full shadow-sm hover:shadow-md transition cursor-pointer">
+    <div
+    onClick={searchModal.onOpen}
+        className="border-[1px] w-auto md:w-auto py-2 rounded-full shadow-sm hover:shadow-md transition cursor-pointer">
           <div className="flex flex-row items-center justify-between">
               <div className="text-sm font-medium px-6">
                   Anywhere
@@ -11,7 +15,7 @@ const Search = () => {
                   Any Week
               </div>
               <div className="hidden sm:block text-sm pl-6 pr-2 text-gray-600 flex flex-row items-center gap-3">
-                  Add Guest
+                  Add Students
               </div>
               <div className="mr-2 p-2 bg-rose-500 rounded-full text-white">
                   <BiSearch size={18 } />

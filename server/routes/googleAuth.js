@@ -1,42 +1,40 @@
-import { Router } from "express";
+// googleAuth.js
+import express from "express";
 import passport from "passport";
+import jwt from "jsonwebtoken";
 
-const router = new Router();
-router.get("/login/failed", (req, res) => {
-	res.status(401).json({
-		error: true,
-		message: "Log in failed",
-	});
-});
+const router = express.Router();
 
-router.get("/login/success", (req, res) => {
-	if (req.user) {
-		res.status(200).json({
-			error: false,
-			message: "Login success",
-			user: req.user,
-		});
-	} else {
-		res.status(200).json({
-			error: true,
-			message: "Not Authorized",
-		});
-	}
-});
+const generateToken = (user) => {
+  return jwt.sign(
+    { id: user._id, role: user.role },
+    process.env.JWT_SECRET_KEY,
+    {
+      expiresIn: "15d",
+    }
+  );
+};
+
+router.get("/google", passport.authenticate("google", { scope: ["profile", "email"] }));
 
 router.get(
-	'/google/callback',
-	passport.authenticate('google', {
-		successRedirect: process.env.CLIENT_SITE_URL,
-		failureRedirect: "/login/failed",
-	})
+	"/google/callback",
+	passport.authenticate("google", { failureRedirect: "/login/failed" }),
+	(req, res) => {
+		if (!req.user) {
+			return res.redirect("/login/failed");
+		}
+		const token = generateToken(req.user);
+		const user = req.user;
+		res.redirect(
+			`${
+				process.env.CLIENT_SITE_URL
+			}oauth-success?token=${token}&user=${encodeURIComponent(
+				JSON.stringify(user)
+			)}`
+		);
+	}
 );
 
-router.get("/google", passport.authenticate("google",["profile", "email"]))
-
-router.get('/logout', (req, res) => {
-    req.logout();
-    res.redirect(process.env.CLIENT_SITE_URL);
-})
 
 export default router;
