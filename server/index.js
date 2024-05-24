@@ -23,7 +23,7 @@ app.use(
 		secret: process.env.JWT_SECRET_KEY,
 		resave: false,
 		saveUninitialized: false,
-		cookie: { secure: false }, // Set to true if using https
+		cookie: { secure: true }, // Set to true if using https
 	})
 );
 
@@ -32,8 +32,19 @@ app.use(passport.session());
 
 const port = process.env.PORT || 8000;
 
+const allowedOrigins = [
+	"http://localhost:5173",
+	"https://urbannest-eight.vercel.app",
+];
+
 const corsOptions = {
-	origin: process.env.CLIENT_SITE_URL || true,
+	origin: function (origin, callback) {
+		if (!origin || allowedOrigins.includes(origin)) {
+			callback(null, true);
+		} else {
+			callback(new Error("Not allowed by CORS"));
+		}
+	},
 	credentials: true,
 };
 
