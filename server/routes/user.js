@@ -8,7 +8,7 @@ import {
 	removeFavorite,
 	getFavorites,
 	updateUserProfile,
-} from "../Controllers/userController.js";
+} from "../controllers/userController.js";
 import { authenticate, restrict } from "../auth/verifyToken.js";
 const router = express.Router();
 
