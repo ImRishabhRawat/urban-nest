@@ -29,22 +29,18 @@ const quickLinks01 = [
     display: "Home",
   },
   {
-    path: "/about",
-    display: "About Us",
+    path: "/booking",
+    display: "Booking",
   },
   {
-    path: "/services",
-    display: "Services",
-  },
-  {
-    path: "/blog",
-    display: "Blog",
+    path: "/favorites",
+    display: "Favorites",
   },
 ]
 
 const quickLinks02 = [
   {
-    path: '/listings',
+    path: '/properties',
     display: 'View Listings',
   },
   {
@@ -52,8 +48,12 @@ const quickLinks02 = [
     display: 'Find Rentals',
   },
   {
-    path: '/contact',
-    display: 'Contact Us',
+    path: '/users/profile/me',
+    display: 'Profile',
+  },
+  {
+    path: '/owner/profile/me',
+    display: 'Profile',
   },
 ];
 const quickLinks03 = [
@@ -62,7 +62,7 @@ const quickLinks03 = [
     display: "Donate",
   },
   {
-    path: "/contact",
+    path: "/",
     display: "Contact Us",
   },
 ]
@@ -77,7 +77,7 @@ const Footer = () => {
           <div className="">
             <div className='flex items-center gap-2 md:gap-4'>
           <img src={logo} alt="logo" className='w-8 h-8 md:w-10 md:h-10' />
-          <h2 className='text-[24px] font-[600] md:text-[28px]'>SolarMed</h2>
+          <h2 className='text-[24px] font-[600] md:text-[28px]'>UrbanNest</h2>
         </div>
             <p className='text-[16px] leading-7 font-[400] text-textColor mt-4'>Copyright @ {year} developed by Rishabh Singh Rawat </p>
             <div className='flex items-center gap-3 mt-4'>
