@@ -3,6 +3,7 @@ import logo from '../../assets/images/sun.png'
 import {RiLinkedinFill} from 'react-icons/ri'
 import sun from '../../assets/images/sun.png'
 import {AiFillYoutube, AiFillGithub, AiOutlineInstagram, AiFillLinkedin} from 'react-icons/ai'
+import Container from '../Container'
 
 const socialLinks = [
   {
@@ -72,6 +73,7 @@ const Footer = () => {
 
   return (
     <footer className="pb-16 pt-10 bg-[#ece7e76f]">
+      <Container>
       <div className="container border-t-2 border-zinc-500 pt-4">
         <div className="flex justify-between flex-col md:flex-row flex-wrap gap-[30px]">
           <div className="">
@@ -121,11 +123,12 @@ const Footer = () => {
           </div>
         </div>
         <div className="w-full -mb-[70px] pt-5 flex justify-center items-center">
-          <h1 className="font-['Helvetica_Now_Display'] text-[15vw]  leading-[.8] text-headingColor font-black md:text-[17vw] xl:text-[16.5vw]   overflow-hidden text-center">
+          <h1 className="font-['Helvetica_Now_Display'] text-[10vw]  leading-[.8] text-headingColor font-black md:text-[17vw] xl:text-[16.5vw]   overflow-hidden text-center">
              URBANNEST
           </h1>
         </div>
-      </div>
+        </div>
+        </Container>
     </footer>
   )
 }

@@ -186,7 +186,7 @@ const OwnerRoomDetails = () => {
                         <Button
                           outline
                           small
-                          label="Room khali kar"
+                          label="Cancel"
                           onClick={() => onCancel(reservation?._id)}
                         />
                       </div>

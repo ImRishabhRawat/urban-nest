@@ -46,7 +46,7 @@ const Dashboard = () => {
                   <div className="">
                     <div className="flex items-center gap-4 mb-10">
                       <figure className='max-w-[200px] max-h-[200px] overflow-hidden object-cover'>
-                        <img src={data?.photo} alt="" />
+                        {/* <img src={data?.photo} alt="" /> */}
                       </figure>
                       <div>
                         <h3 className="text-[22px] leading-9 font-bold text-headingColor mt-3">

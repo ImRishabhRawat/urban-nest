@@ -9,7 +9,7 @@ import Heading from "../components/Heading";
 import ListingCard from "../components/listings/ListingCard";
 import useLoginModal from "../hooks/useLoginModal";
 
-const Property = () => {
+const   Property = () => {
   const { user } = useContext(authContext);
   const loginModal = useLoginModal();
   const [properties, setProperties] = useState([]);

@@ -32,6 +32,7 @@ const Tab = ({ data, tab, setTab }) => {
         // Maybe dispatch a logout action?
         dispatch({ type: 'LOGOUT' });
         toast.success(result.message || 'Account deleted successfully');
+        navigate("/")
       } else {
         throw new window.Error('Error deleting account');
       }
