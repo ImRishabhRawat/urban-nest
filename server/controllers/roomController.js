@@ -62,7 +62,10 @@ export const createRoom = async (req, res) => {
 
 export const getAllRooms = async (req, res) => {
 	try {
-		const rooms = await Room.find({}).populate("owner", "-password").sort({ createdAt: -1 }); // Exclude password field when populating owner
+		const rooms = await Room.find({})
+			.populate("owner", "-password") // Exclude password field when populating owner
+			.sort({ createdAt: -1 }); // Sort by createdAt in descending order
+
 		res.status(200).json({
 			success: true,
 			data: rooms,
@@ -75,6 +78,7 @@ export const getAllRooms = async (req, res) => {
 		});
 	}
 };
+
 
 
 export const getSingleRoom = async (req, res) => {
